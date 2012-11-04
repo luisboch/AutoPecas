@@ -4,14 +4,22 @@
  */
 package autopecas.view.panels;
 
+import autopecas.view.beans.ProductCart;
+import autopecas.view.formaters.Currency;
 import autopecas.view.menu.Application;
 import autopecas.view.menu.JDialogSearchProduct;
+import com.towel.el.FieldResolver;
+import com.towel.el.annotation.Resolvable;
+import com.towel.swing.table.ObjectTableModel;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -19,7 +27,6 @@ import javax.swing.table.TableColumn;
  */
 public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
 
-    private boolean inSale = true;
     private final JDialogSearchProduct dialog = new JDialogSearchProduct(Application.getInstance(), true);
 
     /**
@@ -45,29 +52,13 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {15200, "Farol dianteiro", "R$ 35,00", 2, "R$ 70,00"}
-            },
-            new String [] {
-                "", "Descrição", "Preço Unitário", "Quantidade", "Total"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        jTable1.setBackground(new java.awt.Color(245, 245, 245));
+        jTable1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(0, 51, 51));
+        jTable1.setGridColor(new java.awt.Color(152, 177, 255));
+        jTable1.setSelectionBackground(new java.awt.Color(225, 220, 84));
+        jTable1.setSelectionForeground(new java.awt.Color(0, 51, 51));
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
 
@@ -96,16 +87,18 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 851, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -119,12 +112,30 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
     // End of variables declaration//GEN-END:variables
 
     private void configureJTableProducts() {
-        TableColumn column = jTable1.getColumnModel().getColumn(0);
-        column.setResizable(false);
-        column.setWidth(0);
-        column.setMaxWidth(0);
-        column.setMinWidth(0);
-        column.setPreferredWidth(0);
+
+        /**
+         *
+         * private Long id; private String name; private Float unitaryValue;
+         * private Float total; private Integer quantity;
+         *
+         */
+        FieldResolver nameResolver = new FieldResolver(ProductCart.class, "name", "Nome");
+        FieldResolver unitaryValueResolver = new FieldResolver(ProductCart.class, "unitaryValue", "Preço Unitário");
+        unitaryValueResolver.setFormatter(new  Currency());
+        FieldResolver quantityResolver = new FieldResolver(ProductCart.class, "quantity", "Quantidade");
+        
+        FieldResolver totalResolver = new FieldResolver(ProductCart.class, "total", "Total");
+        totalResolver.setFormatter(new  Currency());
+        
+        ObjectTableModel<ProductCart> towel = new ObjectTableModel<>(
+                new FieldResolver[]{nameResolver, unitaryValueResolver, quantityResolver, totalResolver});
+
+        java.util.List<ProductCart> produtoCarts = new ArrayList<>();
+        produtoCarts.add(new ProductCart(1595l, "Lampada frontal", 10.00f, 150f, 15));
+        produtoCarts.add(new ProductCart());
+        produtoCarts.add(new ProductCart(1595l, "Lampada frontal", 10.00f, 150f, 15));
+        towel.setData(produtoCarts);
+        jTable1.setModel(towel);
     }
 
     private void configureListener() {
@@ -138,13 +149,13 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
                             KeyEvent ev = (KeyEvent) event;
                             // Verifica se foi um key Released
                             if (ev.getID() == KeyEvent.KEY_RELEASED) {
-                                if(!dialog.isVisible()){
+                                if (!dialog.isVisible()) {
                                     if (ev.getKeyCode() == KeyEvent.VK_F1) {
                                         JOptionPane.showMessageDialog(jPanel, "Texto de ajuda");
                                     } else if (ev.getID() == KeyEvent.KEY_RELEASED && checkKeyAction(ev)) {
                                         dialog.setText(ev.getKeyChar() + "");
                                         dialog.setVisible(true);
-                                    } else if (ev.getKeyCode() == KeyEvent.VK_F8 && inSale) {
+                                    } else if (ev.getKeyCode() == KeyEvent.VK_F8) {
                                         dialog.setText("");
                                         dialog.setVisible(true);
                                     }

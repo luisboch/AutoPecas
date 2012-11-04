@@ -6,6 +6,9 @@ package autopecas.view.menu;
 
 import autopecas.view.menu.enums.WindowType;
 import autopecas.view.panels.AdminPanel;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -25,6 +28,8 @@ public class Application extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         addKeyControllers();
+        
+        configureIcon();
     }
 
     /**
@@ -154,5 +159,12 @@ public class Application extends javax.swing.JFrame {
 
     public static Application getInstance() {
         return instance == null ? instance = new Application(): instance;
+    }
+
+    private void configureIcon() {
+        URL url =getClass().getResource("/autopecas/images/1352068202_applications-accessories.png");
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Image img = kit.createImage(url);
+        setIconImage(img);
     }
 }
