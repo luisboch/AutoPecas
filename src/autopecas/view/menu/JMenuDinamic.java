@@ -56,12 +56,6 @@ public class JMenuDinamic extends JMenuItem implements ActionListener{
             app.setApplicationPanel(getPanel());
         }
         
-        if(this.type == WindowType.VENDA){
-            app.setInSale(true);
-        } else {
-            app.setInSale(false);
-        }
-        
         app.setSelected(this);
     }
 }

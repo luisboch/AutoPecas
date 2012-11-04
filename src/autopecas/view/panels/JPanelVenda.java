@@ -4,17 +4,31 @@
  */
 package autopecas.view.panels;
 
+import autopecas.view.menu.Application;
+import autopecas.view.menu.JDialogSearchProduct;
+import java.awt.AWTEvent;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
+import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author ADMIN
  */
-public class JPanelVenda extends javax.swing.JPanel {
+public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
+
+    private boolean inSale = true;
+    private final JDialogSearchProduct dialog = new JDialogSearchProduct(Application.getInstance(), true);
 
     /**
      * Creates new form JPanelVenda
      */
     public JPanelVenda() {
         initComponents();
+        configureJTableProducts();
+        configureListener();
     }
 
     /**
@@ -33,23 +47,28 @@ public class JPanelVenda extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {15200, "Farol dianteiro", "R$ 35,00", 2, "R$ 70,00"}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "", "Descrição", "Preço Unitário", "Quantidade", "Total"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -98,4 +117,94 @@ public class JPanelVenda extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void configureJTableProducts() {
+        TableColumn column = jTable1.getColumnModel().getColumn(0);
+        column.setResizable(false);
+        column.setWidth(0);
+        column.setMaxWidth(0);
+        column.setMinWidth(0);
+        column.setPreferredWidth(0);
+    }
+
+    private void configureListener() {
+        final JPanelVenda jPanel = this;
+        Toolkit.getDefaultToolkit().addAWTEventListener(
+                new AWTEventListener() {
+                    @Override
+                    public void eventDispatched(AWTEvent event) {
+                        // Verifica se este painel está sendo exibido
+                        if (jPanel.isVisible()) {
+                            KeyEvent ev = (KeyEvent) event;
+                            // Verifica se foi um key Released
+                            if (ev.getID() == KeyEvent.KEY_RELEASED) {
+                                if(!dialog.isVisible()){
+                                    if (ev.getKeyCode() == KeyEvent.VK_F1) {
+                                        JOptionPane.showMessageDialog(jPanel, "Texto de ajuda");
+                                    } else if (ev.getID() == KeyEvent.KEY_RELEASED && checkKeyAction(ev)) {
+                                        dialog.setText(ev.getKeyChar() + "");
+                                        dialog.setVisible(true);
+                                    } else if (ev.getKeyCode() == KeyEvent.VK_F8 && inSale) {
+                                        dialog.setText("");
+                                        dialog.setVisible(true);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }, AWTEvent.KEY_EVENT_MASK);
+    }
+
+    private boolean checkKeyAction(KeyEvent ev) {
+        if (ev.getKeyCode() == KeyEvent.VK_F1
+                || ev.getKeyCode() == KeyEvent.VK_F2
+                || ev.getKeyCode() == KeyEvent.VK_F3
+                || ev.getKeyCode() == KeyEvent.VK_F4
+                || ev.getKeyCode() == KeyEvent.VK_F5
+                || ev.getKeyCode() == KeyEvent.VK_F6
+                || ev.getKeyCode() == KeyEvent.VK_F7
+                || ev.getKeyCode() == KeyEvent.VK_F8
+                || ev.getKeyCode() == KeyEvent.VK_F9
+                || ev.getKeyCode() == KeyEvent.VK_F10
+                || ev.getKeyCode() == KeyEvent.VK_F11
+                || ev.getKeyCode() == KeyEvent.VK_F12
+                || ev.getKeyCode() == KeyEvent.VK_TAB
+                || ev.getKeyCode() == KeyEvent.VK_UP
+                || ev.getKeyCode() == KeyEvent.VK_DOWN
+                || ev.getKeyCode() == KeyEvent.VK_LEFT
+                || ev.getKeyCode() == KeyEvent.VK_RIGHT
+                || ev.getKeyCode() == KeyEvent.VK_ALT_GRAPH
+                || ev.getKeyCode() == KeyEvent.VK_ALT
+                || ev.getKeyCode() == KeyEvent.VK_CONTROL
+                || ev.getKeyCode() == KeyEvent.VK_INSERT
+                || ev.getKeyCode() == KeyEvent.VK_HOME
+                || ev.getKeyCode() == KeyEvent.VK_NUM_LOCK
+                || ev.getKeyCode() == KeyEvent.VK_DELETE
+                || ev.getKeyCode() == KeyEvent.VK_PRINTSCREEN
+                || ev.getKeyCode() == KeyEvent.VK_SCROLL_LOCK
+                || ev.getKeyCode() == KeyEvent.VK_PAUSE
+                || ev.getKeyCode() == KeyEvent.VK_PAGE_DOWN
+                || ev.getKeyCode() == KeyEvent.VK_PAGE_UP
+                || ev.getKeyCode() == KeyEvent.VK_END
+                || ev.getKeyCode() == KeyEvent.VK_ENTER
+                || ev.getKeyCode() == KeyEvent.VK_CAPS_LOCK
+                || ev.getKeyCode() == KeyEvent.VK_SHIFT
+                || ev.getKeyCode() == KeyEvent.VK_CONTEXT_MENU
+                || ev.getKeyCode() == KeyEvent.VK_WINDOWS
+                || ev.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void loadContent() {
+        // DO NOTHING
+    }
+
+    @Override
+    public void setVisible(boolean aFlag) {
+        super.setVisible(aFlag);
+    }
 }

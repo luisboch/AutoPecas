@@ -22,19 +22,7 @@ public class JDialogSearchProduct extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        final JDialogSearchProduct dialog = this;
-        Toolkit.getDefaultToolkit().addAWTEventListener(
-                new AWTEventListener() {
-                    @Override
-                    public void eventDispatched(AWTEvent event) {
-                        KeyEvent ev = (KeyEvent) event;
-                        if (ev.getID() == KeyEvent.KEY_RELEASED
-                                && ev.getKeyCode() == KeyEvent.VK_ESCAPE
-                                && dialog.isVisible()) {
-                            dialog.setVisible(false);
-                        }
-                    }
-                }, AWTEvent.KEY_EVENT_MASK);
+        configureListener();
     }
 
     /**
@@ -132,48 +120,6 @@ public class JDialogSearchProduct extends javax.swing.JDialog {
         if (evt == null) {
         };
     }//GEN-LAST:event_jTable1PropertyChange
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDialogSearchProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDialogSearchProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDialogSearchProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDialogSearchProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDialogSearchProduct dialog = new JDialogSearchProduct(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -181,7 +127,7 @@ public class JDialogSearchProduct extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
 
-    void setText(String string) {
+    public void setText(String string) {
         this.jTextFieldSearch.setText(string);
     }
 
@@ -189,5 +135,21 @@ public class JDialogSearchProduct extends javax.swing.JDialog {
     public void setVisible(boolean b) {
         super.setVisible(b);
         jTextFieldSearch.requestFocus();
+    }
+
+    private void configureListener() {
+        final JDialogSearchProduct dialog = this;
+        Toolkit.getDefaultToolkit().addAWTEventListener(
+                new AWTEventListener() {
+                    @Override
+                    public void eventDispatched(AWTEvent event) {
+                        KeyEvent ev = (KeyEvent) event;
+                        if (ev.getID() == KeyEvent.KEY_RELEASED
+                                && ev.getKeyCode() == KeyEvent.VK_ESCAPE
+                                && dialog.isVisible()) {
+                            dialog.setVisible(false);
+                        }
+                    }
+                }, AWTEvent.KEY_EVENT_MASK);
     }
 }

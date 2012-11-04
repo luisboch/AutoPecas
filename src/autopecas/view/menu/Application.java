@@ -5,31 +5,22 @@
 package autopecas.view.menu;
 
 import autopecas.view.menu.enums.WindowType;
-import java.awt.AWTEvent;
-import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import autopecas.view.panels.AdminPanel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
 /**
  *
  * @author ADMIN
  */
 public class Application extends javax.swing.JFrame {
-
+    private static Application instance;
     private JMenuDinamic selected;
-    private boolean inSale = true;
-    private final JDialogSearchProduct dialog = new JDialogSearchProduct(this, true);
+    private final JDialogLoading loading = new JDialogLoading(this);
 
-    public Application() {
+    private Application() {
         initComponents();
         setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -106,41 +97,6 @@ public class Application extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Application.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-
-                Application app = new Application();
-                app.setVisible(true);
-
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -157,109 +113,7 @@ public class Application extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupMenu2;
     // End of variables declaration//GEN-END:variables
 
-    private void configureMenu(ActionEvent source) {
-        if(source.getSource() instanceof JMenuDinamic){
-            JMenuDinamic  d = (JMenuDinamic) source.getSource();
-            d.actionPerformed(source);
-        }
-    }
-
     private void addKeyControllers() {
-        JPanel painel = ((JPanel) getContentPane());
-        //Criamos as ações  
-        ActionMap actionMap = painel.getActionMap();
-        actionMap.put("F12", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                configureMenu(evt);
-                inSale = true;
-            }
-        });
-
-        actionMap.put("finalizarVenda", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-            }
-        });
-        actionMap.put("irParaRecebido", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-            }
-        });
-        actionMap.put("irParaQuantidade", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-            }
-        });
-
-        //Registramos os botões que queremos para as ações  
-        InputMap imap = painel.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
-        imap.put(KeyStroke.getKeyStroke("F2"), "novaVenda");
-        imap.put(KeyStroke.getKeyStroke("F6"), "finalizarVenda");
-        imap.put(KeyStroke.getKeyStroke("F7"), "irParaRecebido");
-        imap.put(KeyStroke.getKeyStroke("F8"), "irParaQuantidade");
-
-        final Application frame = this;
-        Toolkit.getDefaultToolkit().addAWTEventListener(
-                new AWTEventListener() {
-                    @Override
-                    public void eventDispatched(AWTEvent event) {
-                        KeyEvent ev = (KeyEvent) event;
-                        if (ev.getID() == KeyEvent.KEY_RELEASED && inSale && checkKeyAction(ev)) {
-                            dialog.setText(ev.getKeyChar() + "");
-                            inSale = false;
-                            dialog.setVisible(true);
-                            inSale = true;
-                        } else if (ev.getKeyCode() == KeyEvent.VK_F8 && inSale ){
-                            dialog.setText("");
-                            inSale = false;
-                            dialog.setVisible(true);
-                            inSale = true;
-                        }
-                    }
-
-                    private boolean checkKeyAction(KeyEvent ev) {
-                        if (ev.getKeyCode() == KeyEvent.VK_F1
-                                || ev.getKeyCode() == KeyEvent.VK_F2
-                                || ev.getKeyCode() == KeyEvent.VK_F3
-                                || ev.getKeyCode() == KeyEvent.VK_F4
-                                || ev.getKeyCode() == KeyEvent.VK_F5
-                                || ev.getKeyCode() == KeyEvent.VK_F6
-                                || ev.getKeyCode() == KeyEvent.VK_F7
-                                || ev.getKeyCode() == KeyEvent.VK_F8
-                                || ev.getKeyCode() == KeyEvent.VK_F9
-                                || ev.getKeyCode() == KeyEvent.VK_F10
-                                || ev.getKeyCode() == KeyEvent.VK_F11
-                                || ev.getKeyCode() == KeyEvent.VK_F12
-                                || ev.getKeyCode() == KeyEvent.VK_TAB
-                                || ev.getKeyCode() == KeyEvent.VK_UP
-                                || ev.getKeyCode() == KeyEvent.VK_DOWN
-                                || ev.getKeyCode() == KeyEvent.VK_LEFT
-                                || ev.getKeyCode() == KeyEvent.VK_RIGHT
-                                || ev.getKeyCode() == KeyEvent.VK_ALT_GRAPH
-                                || ev.getKeyCode() == KeyEvent.VK_ALT
-                                || ev.getKeyCode() == KeyEvent.VK_CONTROL
-                                || ev.getKeyCode() == KeyEvent.VK_INSERT
-                                || ev.getKeyCode() == KeyEvent.VK_HOME
-                                || ev.getKeyCode() == KeyEvent.VK_NUM_LOCK
-                                || ev.getKeyCode() == KeyEvent.VK_DELETE
-                                || ev.getKeyCode() == KeyEvent.VK_PRINTSCREEN
-                                || ev.getKeyCode() == KeyEvent.VK_SCROLL_LOCK
-                                || ev.getKeyCode() == KeyEvent.VK_PAUSE
-                                || ev.getKeyCode() == KeyEvent.VK_PAGE_DOWN
-                                || ev.getKeyCode() == KeyEvent.VK_PAGE_UP
-                                || ev.getKeyCode() == KeyEvent.VK_END
-                                || ev.getKeyCode() == KeyEvent.VK_ENTER
-                                || ev.getKeyCode() == KeyEvent.VK_CAPS_LOCK
-                                || ev.getKeyCode() == KeyEvent.VK_SHIFT
-                                || ev.getKeyCode() == KeyEvent.VK_CONTEXT_MENU
-                                || ev.getKeyCode() == KeyEvent.VK_WINDOWS
-                                || ev.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                            return false;
-                        }
-                        return true;
-                    }
-                }, AWTEvent.KEY_EVENT_MASK);
     }
 
     public JMenuDinamic getSelected() {
@@ -270,22 +124,35 @@ public class Application extends javax.swing.JFrame {
         this.selected = selected;
     }
 
-    void setApplicationPanel(JPanel panel) {
+    void setApplicationPanel(final JPanel panel) {
+        if (this.jPanelRootPane.getComponents().length > 0) {
+            this.jPanelRootPane.getComponent(0).setVisible(false);
+        }
         this.jPanelRootPane.removeAll();
         this.jPanelRootPane.add(panel, java.awt.BorderLayout.CENTER);
+        final Application frame = this;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                AdminPanel admPanel = (AdminPanel) panel;
+                admPanel.loadContent();
+            }
+        };
+        
+        loading.action(runnable);
+        loading.setVisible(true);
+        
+        frame.jPanelRootPane.getRootPane().revalidate();
+        frame.jPanelRootPane.getRootPane().repaint();
         panel.setVisible(true);
-        this.revalidate();
-        this.repaint();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        Logger.getLogger(getClass().getSimpleName()).log(
+        frame.revalidate();
+        frame.repaint();
+        Logger.getLogger(frame.getClass().getSimpleName()).log(
                 Level.INFO, "panel '{'{0}'}' has add", panel.toString());
     }
 
-    public boolean isInSale() {
-        return inSale;
-    }
-
-    public void setInSale(boolean inSale) {
-        this.inSale = inSale;
+    public static Application getInstance() {
+        return instance == null ? instance = new Application(): instance;
     }
 }
