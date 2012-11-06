@@ -5,11 +5,12 @@
 package autopecas.view.panels;
 
 import autopecas.view.beans.ProductCart;
+import autopecas.view.components.Button;
+import autopecas.view.components.JTable;
 import autopecas.view.formaters.Currency;
 import autopecas.view.menu.Application;
 import autopecas.view.menu.JDialogSearchProduct;
 import com.towel.el.FieldResolver;
-import com.towel.el.annotation.Resolvable;
 import com.towel.swing.table.ObjectTableModel;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
@@ -17,9 +18,6 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -48,9 +46,9 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jButton1 = new Button();
 
         jTable1.setBackground(new java.awt.Color(245, 245, 245));
         jTable1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -98,7 +96,7 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
