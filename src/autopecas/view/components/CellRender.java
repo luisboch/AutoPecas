@@ -34,11 +34,10 @@ public class CellRender extends javax.swing.JPanel implements TableCellRenderer 
         jLabel1 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(46, 40));
-        setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel1.setText("jLabel1");
-        add(jLabel1, java.awt.BorderLayout.CENTER);
+        add(jLabel1);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -59,6 +58,7 @@ public class CellRender extends javax.swing.JPanel implements TableCellRenderer 
         } else {
             this.jLabel1.setText("");
         }
+        
         return this;
     }
 }

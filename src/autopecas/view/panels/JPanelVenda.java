@@ -6,7 +6,7 @@ package autopecas.view.panels;
 
 import autopecas.view.beans.ProductCart;
 import autopecas.view.components.Button;
-import autopecas.view.components.JTable;
+import autopecas.view.components.Table;
 import autopecas.view.formaters.Currency;
 import autopecas.view.menu.Application;
 import autopecas.view.menu.JDialogSearchProduct;
@@ -46,7 +46,7 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new JTable();
+        jTable1 = new Table();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new Button();
 

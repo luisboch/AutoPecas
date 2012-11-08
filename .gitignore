@@ -6,3 +6,4 @@
 *.ear
 /nbproject/private/
 !/lib/towel.jar
+/build/
