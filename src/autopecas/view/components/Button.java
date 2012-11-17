@@ -4,13 +4,9 @@
  */
 package autopecas.view.components;
 
-import autopecas.view.menu.Application;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -46,6 +42,5 @@ public class Button extends JButton {
         setBackground(new java.awt.Color(153, 204, 255));
         setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         setForeground(new java.awt.Color(51, 51, 51));
-        setText("Fechar Venda");
     }
 }
