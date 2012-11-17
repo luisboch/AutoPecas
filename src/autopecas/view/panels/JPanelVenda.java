@@ -6,8 +6,8 @@ package autopecas.view.panels;
 
 import autopecas.view.beans.ProductCart;
 import autopecas.view.components.Button;
-import autopecas.view.components.Table;
 import autopecas.view.formaters.Currency;
+import autopecas.view.listeners.ActionListener;
 import autopecas.view.menu.Application;
 import autopecas.view.menu.JDialogSearchProduct;
 import com.towel.el.FieldResolver;
@@ -15,8 +15,10 @@ import com.towel.swing.table.ObjectTableModel;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,6 +27,7 @@ import javax.swing.JOptionPane;
  */
 public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
 
+    private static final Logger log = Logger.getLogger(JPanelVenda.class.getSimpleName());
     private final JDialogSearchProduct dialog = new JDialogSearchProduct(Application.getInstance(), true);
 
     /**
@@ -46,9 +49,9 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new Table();
+        jTable1 = new autopecas.view.components.Table();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new Button();
+        jButton1 = new Button(this, KeyEvent.VK_F5);
 
         jTable1.setBackground(new java.awt.Color(245, 245, 245));
         jTable1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -119,12 +122,12 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
          */
         FieldResolver nameResolver = new FieldResolver(ProductCart.class, "name", "Nome");
         FieldResolver unitaryValueResolver = new FieldResolver(ProductCart.class, "unitaryValue", "Preço Unitário");
-        unitaryValueResolver.setFormatter(new  Currency());
+        unitaryValueResolver.setFormatter(new Currency());
         FieldResolver quantityResolver = new FieldResolver(ProductCart.class, "quantity", "Quantidade");
-        
+
         FieldResolver totalResolver = new FieldResolver(ProductCart.class, "total", "Total");
-        totalResolver.setFormatter(new  Currency());
-        
+        totalResolver.setFormatter(new Currency());
+
         ObjectTableModel<ProductCart> towel = new ObjectTableModel<>(
                 new FieldResolver[]{nameResolver, unitaryValueResolver, quantityResolver, totalResolver});
 
@@ -148,8 +151,11 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
                             // Verifica se foi um key Released
                             if (ev.getID() == KeyEvent.KEY_RELEASED) {
                                 if (!dialog.isVisible()) {
+                                    jPanel.setEnabled(false);
                                     if (ev.getKeyCode() == KeyEvent.VK_F1) {
+
                                         JOptionPane.showMessageDialog(jPanel, "Texto de ajuda");
+
                                     } else if (ev.getID() == KeyEvent.KEY_RELEASED && checkKeyAction(ev)) {
                                         dialog.setText(ev.getKeyChar() + "");
                                         dialog.setVisible(true);
@@ -157,6 +163,7 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
                                         dialog.setText("");
                                         dialog.setVisible(true);
                                     }
+                                    jPanel.setEnabled(true);
                                 }
                             }
 
@@ -209,7 +216,12 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
 
     @Override
     public void loadContent() {
-        // DO NOTHING
+        jButton1.addActionListener(new ActionListener(jPanel1) {
+            @Override
+            public void doAction(ActionEvent e) throws Exception {
+                log.info("Action Performed");
+            }
+        });
     }
 
     @Override

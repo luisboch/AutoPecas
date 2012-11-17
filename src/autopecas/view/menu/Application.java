@@ -11,14 +11,19 @@ import java.awt.Toolkit;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 /**
  *
  * @author ADMIN
  */
 public class Application extends javax.swing.JFrame {
+
     private static Application instance;
     private JMenuDinamic selected;
     private final JDialogLoading loading = new JDialogLoading(this);
@@ -27,8 +32,8 @@ public class Application extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        addKeyControllers();
-        
+        configureListeners();
+
         configureIcon();
     }
 
@@ -98,7 +103,6 @@ public class Application extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     /**
      * @param args the command line arguments
      */
@@ -118,7 +122,11 @@ public class Application extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupMenu2;
     // End of variables declaration//GEN-END:variables
 
-    private void addKeyControllers() {
+    private void configureListeners() {
+        InputMap iMap = jMenuBar1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        Object action = iMap.get(KeyStroke.getKeyStroke("F10"));
+        ActionMap actionMap = jMenuBar1.getActionMap();
+        actionMap.getParent().remove(action);
     }
 
     public JMenuDinamic getSelected() {
@@ -144,10 +152,10 @@ public class Application extends javax.swing.JFrame {
                 admPanel.loadContent();
             }
         };
-        
+
         loading.action(runnable);
         loading.setVisible(true);
-        
+
         frame.jPanelRootPane.getRootPane().revalidate();
         frame.jPanelRootPane.getRootPane().repaint();
         panel.setVisible(true);
@@ -158,11 +166,11 @@ public class Application extends javax.swing.JFrame {
     }
 
     public static Application getInstance() {
-        return instance == null ? instance = new Application(): instance;
+        return instance == null ? instance = new Application() : instance;
     }
 
     private void configureIcon() {
-        URL url =getClass().getResource("/autopecas/images/1352068202_applications-accessories.png");
+        URL url = getClass().getResource("/autopecas/images/1352068202_applications-accessories.png");
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image img = kit.createImage(url);
         setIconImage(img);

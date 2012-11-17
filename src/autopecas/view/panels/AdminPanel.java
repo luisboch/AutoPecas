@@ -6,4 +6,5 @@ package autopecas.view.panels;
  */
 public interface AdminPanel {
     void loadContent();
+    boolean isEnabled();
 }
