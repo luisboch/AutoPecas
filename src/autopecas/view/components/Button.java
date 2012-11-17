@@ -5,6 +5,7 @@
 package autopecas.view.components;
 
 import java.awt.AWTEvent;
+import java.awt.Component;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
@@ -21,31 +22,31 @@ import javax.swing.JPanel;
  */
 public class Button extends JButton {
     private static final Logger log = Logger.getLogger(Button.class.getSimpleName());
-    private JPanel parent;
+    private Component parent;
     private int key;
 
-    public Button(JPanel parent, int keyEventVk) {
+    public Button(Component parent, int keyEventVk) {
         this.parent = parent;
         this.key = keyEventVk;
         configure();
 
     }
 
-    public Button(Icon icon, JPanel parent, int keyEventVk) {
+    public Button(Icon icon, Component parent, int keyEventVk) {
         super(icon);
         this.parent = parent;
         this.key = keyEventVk;
         configure();
     }
 
-    public Button(String text, JPanel parent, int keyEventVk) {
+    public Button(String text, Component parent, int keyEventVk) {
         super(text);
         this.parent = parent;
         this.key = keyEventVk;
         configure();
     }
 
-    public Button(Action a, JPanel parent, int keyEventVk) {
+    public Button(Action a, Component parent, int keyEventVk) {
         super(a);
         this.parent = parent;
         this.key = keyEventVk;

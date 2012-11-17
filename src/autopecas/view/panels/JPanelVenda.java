@@ -6,6 +6,7 @@ package autopecas.view.panels;
 
 import autopecas.view.beans.ProductCart;
 import autopecas.view.components.Button;
+import autopecas.view.components.Confirm;
 import autopecas.view.formaters.Currency;
 import autopecas.view.listeners.ActionListener;
 import autopecas.view.menu.Application;
@@ -37,6 +38,8 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
         initComponents();
         configureJTableProducts();
         configureListener();
+        
+        addButtonListeners();
     }
 
     /**
@@ -216,16 +219,20 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
 
     @Override
     public void loadContent() {
-        jButton1.addActionListener(new ActionListener(jPanel1) {
-            @Override
-            public void doAction(ActionEvent e) throws Exception {
-                log.info("Action Performed");
-            }
-        });
     }
 
     @Override
     public void setVisible(boolean aFlag) {
         super.setVisible(aFlag);
+    }
+
+    private void addButtonListeners() {
+        jButton1.addActionListener(new ActionListener(jPanel1) {
+            @Override
+            public void doAction(ActionEvent e) throws Exception {
+                Confirm confirm = new Confirm(Application.getInstance());
+                confirm.
+            }
+        });
     }
 }
