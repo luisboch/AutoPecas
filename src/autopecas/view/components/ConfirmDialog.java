@@ -5,12 +5,13 @@
 package autopecas.view.components;
 
 import autopecas.view.listeners.ActionListener;
+import java.awt.AWTEvent;
 import java.awt.Dialog;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JDialog;
 
 /**
  *
@@ -127,6 +128,8 @@ public class ConfirmDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void addListeners() {
+        
+        //Botão cancelar click
         jButtonCancelar.addActionListener(new ActionListener(this){
             @Override
             public void onActionPerformed(ActionEvent e) throws Exception {
@@ -135,6 +138,7 @@ public class ConfirmDialog extends javax.swing.JDialog {
             }
         });
         
+        //Botão Ok clikc
         jButtonOk.addActionListener(new ActionListener(this){
             @Override
             public void onActionPerformed(ActionEvent e) throws Exception {
@@ -142,7 +146,24 @@ public class ConfirmDialog extends javax.swing.JDialog {
                 this.parent.setVisible(false);
             }
         });
+        
+        //Esc key
+        final JDialog dialog = this;
+        Toolkit.getDefaultToolkit().addAWTEventListener(
+                new AWTEventListener() {
+                    @Override
+                    public void eventDispatched(AWTEvent event) {
+                        KeyEvent ev = (KeyEvent) event;
+                        if (ev.getID() == KeyEvent.KEY_RELEASED
+                                && ev.getKeyCode() == KeyEvent.VK_ESCAPE
+                                && dialog.isVisible()) {
+                            dialog.setVisible(false);
+                        }
+                    }
+                }, AWTEvent.KEY_EVENT_MASK);
+        
     }
+    
 
     public boolean getResponse() {
         return response;

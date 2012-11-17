@@ -41,6 +41,7 @@ public class JDialogSearchProduct extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(435, 485));
+        setModal(true);
         setUndecorated(true);
         setResizable(false);
 
