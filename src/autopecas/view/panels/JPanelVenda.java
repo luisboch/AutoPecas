@@ -6,7 +6,7 @@ package autopecas.view.panels;
 
 import autopecas.view.beans.ProductCart;
 import autopecas.view.components.Button;
-import autopecas.view.components.Confirm;
+import autopecas.view.components.ConfirmDialog;
 import autopecas.view.formaters.Currency;
 import autopecas.view.listeners.ActionListener;
 import autopecas.view.menu.Application;
@@ -38,7 +38,7 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
         initComponents();
         configureJTableProducts();
         configureListener();
-        
+
         addButtonListeners();
     }
 
@@ -116,13 +116,7 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
     // End of variables declaration//GEN-END:variables
 
     private void configureJTableProducts() {
-
-        /**
-         *
-         * private Long id; private String name; private Float unitaryValue;
-         * private Float total; private Integer quantity;
-         *
-         */
+        
         FieldResolver nameResolver = new FieldResolver(ProductCart.class, "name", "Nome");
         FieldResolver unitaryValueResolver = new FieldResolver(ProductCart.class, "unitaryValue", "Preço Unitário");
         unitaryValueResolver.setFormatter(new Currency());
@@ -153,7 +147,7 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
                             KeyEvent ev = (KeyEvent) event;
                             // Verifica se foi um key Released
                             if (ev.getID() == KeyEvent.KEY_RELEASED) {
-                                if (!dialog.isVisible()) {
+                                if (!dialog.isVisible() && jPanel.isEnabled()) {
                                     jPanel.setEnabled(false);
                                     if (ev.getKeyCode() == KeyEvent.VK_F1) {
 
@@ -227,11 +221,18 @@ public class JPanelVenda extends javax.swing.JPanel implements AdminPanel {
     }
 
     private void addButtonListeners() {
+        final JPanelVenda panel = this;
         jButton1.addActionListener(new ActionListener(jPanel1) {
             @Override
-            public void doAction(ActionEvent e) throws Exception {
-                Confirm confirm = new Confirm(Application.getInstance());
-                confirm.
+            public void onActionPerformed(ActionEvent e) throws Exception {
+                ConfirmDialog confirm = new ConfirmDialog(Application.getInstance());
+                confirm.setText("Você deseja realmente fechar a venda?<br>Esta ação não pode ser desfeita");
+                panel.setEnabled(false);
+                confirm.setVisible(true);
+                panel.setEnabled(true);
+                if (confirm.getResponse()) {
+                    log.info("Closing Sale");
+                }
             }
         });
     }

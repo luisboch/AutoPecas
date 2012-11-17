@@ -7,9 +7,6 @@ package autopecas.view.listeners;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 
 /**
@@ -17,24 +14,21 @@ import javax.swing.JOptionPane;
  * @author luis.boch
  * @since Nov 7, 2012
  */
-public class ActionListener implements java.awt.event.ActionListener{
-    private Component parent;
-    private static final Logger log = Logger.getLogger(ActionListener.class.getSimpleName()); 
-
+public class ActionListener extends AbstractEventListener 
+implements java.awt.event.ActionListener{
     public ActionListener(Component parent) {
-        this.parent = parent;
+        super(parent);
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
         try{
-            doAction(e);
-        } catch (Exception ex){
-            log.log(Level.SEVERE, ex.getMessage(), ex);
-            JOptionPane.showMessageDialog(parent, "Ops, encontramos um erro, por favor, contate o suporte!");
+            onActionPerformed(e);
+        } catch (Throwable ex){
+            onError(e, ex);
         }
-    }
+    }  
     
-    public void doAction(ActionEvent e) throws Exception{
+    public void onActionPerformed(ActionEvent e) throws Exception{
     }
 }
